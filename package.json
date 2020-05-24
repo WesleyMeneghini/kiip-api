@@ -1,0 +1,28 @@
+{
+  "name": "kiip-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx nodemon bin/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WesleyMeneghini/kiip-api.git"
+  },
+  "author": "Wesley Meneghini",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WesleyMeneghini/kiip-api/issues"
+  },
+  "homepage": "https://github.com/WesleyMeneghini/kiip-api#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.15"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
