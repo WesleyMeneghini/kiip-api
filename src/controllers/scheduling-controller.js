@@ -1,4 +1,6 @@
 const schedulingRepository = require('../repositories/scheduling-repository')
+const emailService = require('../services/email-service');
+
 
 exports.get = async (req, res, next) => {
     let result = await schedulingRepository.get();
@@ -36,8 +38,22 @@ exports.post = async (req, res, next) => {
         // console.log(totalPrice)
         
         let teste = await this.put(totalPrice)
-        // let result = await schedulingRepository.update(id, totalPrice);
+
+        emailService.send(
+            teste.email,
+            "Agendamento na KIIP limpeza automitiva!",
+            global.EMAIL_TMPL.replace('{0}', teste.name)
+
+        );
+        emailService.send(
+            "wesley.meneghiniwwm@gmail.com",
+            "Novo agendamento " + teste.dateService,
+            teste.toString()
+        )
+
         res.status(201).json(teste)
+
+
     } catch (error) {
         res.status(400).json(error)
     }
