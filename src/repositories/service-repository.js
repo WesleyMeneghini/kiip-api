@@ -6,6 +6,11 @@ exports.get = async () => {
     const res = await Service.find();
     return res;
 }
+exports.getById = async (id) => {
+    
+    const res = await Service.findById(id);
+    return res;
+}
 
 exports.created = async (data) => {
     var service = new Service(data);

@@ -1,6 +1,7 @@
-const express = require('express');
-const serviceRepository = require('../repositories/service-repository');
+const multer = require('multer');
+const fs = require('fs');
 
+const serviceRepository = require('../repositories/service-repository');
 
 exports.get = async (req, res, next) =>{
     try {
@@ -16,9 +17,8 @@ exports.get = async (req, res, next) =>{
 
 exports.post = async (req, res, next) =>{
     try {
-
         const data = await serviceRepository.created(req.body);
-        console.log(data)
+        // console.log(data)
         res.status(201).send(data)
     } catch (error) {
         console.log(error)
@@ -29,10 +29,82 @@ exports.post = async (req, res, next) =>{
     }
 }
 
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+      cb(null, "./uploads");
+    },
+    filename: function(req, file, cb) {
+      cb(
+        null,
+        // file.fieldname + "-" + 
+        Date.now() +
+        "-" +
+        file.originalname.split(".")[0].trim().replace(/ /g , "-") +
+        "." +
+        file.originalname.split(".").pop()
+      );
+    }
+});
+
+fileFilter = (req, file, cb) => {
+    const ext = file.mimetype.split("/").pop();
+    if (!["jpeg", "png"].includes(ext)) {
+        req.erro = "Tipo de arquivo inválido";
+        cb(null, false);
+    } else cb(null, true);
+};
+
+
+const upload = multer({
+    storage: storage,
+    fileFilter: fileFilter
+}).single("uploads");
+
+exports.uploadImage = async (req, res, next) => {
+     upload(req, res, erro => {
+
+        // console.log(req.file);
+        if (req.erro) return res.status(400).send({ erro: req.erro });
+
+        const service = {};
+        service.id = req.params.id;
+        service.image = req.file.filename;
+        
+        try {
+            serviceRepository.getById(service.id).then(data => {
+                // console.log(data)
+                const serviceImage = data.image
+                serviceRepository.update(service.id, service).then(e => {
+                    // console.log(e)
+                    if(serviceImage != ''){
+                        fs.unlinkSync('./uploads/' + serviceImage)
+                    }
+                    res.json({ 
+                        image: e.image 
+                    })
+
+                })
+            }).catch(e => {
+                // console.log(e)
+                fs.unlinkSync('./uploads/' + service.image)
+                res.status(400).json({
+                    message: 'ID inválido'
+                })
+            })
+            
+        } catch (error) {
+        console.log(error)
+            fs.unlinkSync('./uploads/' + service.image)
+            return res.status(404).send({ erro: "Serviço não encontrado" });
+        }
+        
+    });
+}
+
 exports.put = async (req, res, next) =>{
     try {
         const data = await serviceRepository.update(req.body._id, req.body);
-        console.log(data)
+        // console.log(data)
         res.status(200).send(data)
     } catch (error) {
         console.log(error)

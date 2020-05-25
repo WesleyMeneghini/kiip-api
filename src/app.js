@@ -6,6 +6,8 @@ const router = express.Router();
 const app = express();
 const config = require('./config');
 
+app.use('/files', express.static('uploads'))
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
