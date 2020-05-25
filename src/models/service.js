@@ -26,7 +26,14 @@ const schema = new Schema({
         default: 0
     },
     image: {
-        type: String
+        type: String,
+        default: 'produto-sem-imagem.jpeg'
+    },
+    status: {
+        type: String,
+        required: true,
+        enum: ['active', 'disable'],
+        default: 'active'
     }
 });
 

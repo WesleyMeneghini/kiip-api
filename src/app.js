@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const router = express.Router();
 
 const app = express();
 const config = require('./config');
@@ -26,11 +25,14 @@ mongoose.connect(
 
 // Carregar as models
 const Service = require('./models/service');
+const Scheduling = require('./models/scheduling');
 
 
 // Carregar rotas
 const servicesRoute = require('./routes/services-route');
+const schedulingRoute = require('./routes/scheduling-route');
 app.use('/services', servicesRoute);
+app.use('/scheduling', schedulingRoute);
 
 
 module.exports = app;
