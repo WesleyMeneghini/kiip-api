@@ -36,6 +36,11 @@ const schema = new Schema({
         required: true,
         enum: ['active', 'disable', 'pending', 'completed', 'canceled'],
         default: 'pending'
+    },
+    totalPrice: {
+        type: Number,
+        required: true,
+        default: 0
     }
 });
 

@@ -20,10 +20,11 @@ exports.created = async (data) => {
 
 exports.update = async (id, data) => {
     if(data._id) delete data._id;
+    console.log(data)
     var res = await Service.findByIdAndUpdate(id, {
         $set: data
     },{
-        new: true //para retornar o ojeto atualizado sem delay
+        new: true 
     });
     return res;
 }

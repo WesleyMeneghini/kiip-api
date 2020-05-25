@@ -103,7 +103,8 @@ exports.uploadImage = async (req, res, next) => {
 
 exports.put = async (req, res, next) =>{
     try {
-        const data = await serviceRepository.update(req.body._id, req.body);
+        // console.log(req.body)
+        const data = await serviceRepository.update(req.body.id, req.body);
         // console.log(data)
         res.status(200).send(data)
     } catch (error) {

@@ -2,14 +2,20 @@ const mongoose = require('mongoose');
 const Scheduling = mongoose.model('Scheduling');
 
 exports.get = async () => {
-    var res = await Scheduling.find();
+    let res = await Scheduling.find({}).populate('typeService', ['name', 'price', 'descount']);
+    return res;
+}
+
+exports.getById = async (id) => {
+    let res = await Scheduling.findById(id).populate('typeService', ['price', 'discount', 'name']);
     return res;
 }
 
 
 exports.created = async (data) => {
     var scheduling = new Scheduling(data)
-    let res = await scheduling.save();
+    let retorno = await scheduling.save();
+    let res = await this.getById(retorno._id);
     return res;
 }
 
@@ -18,7 +24,7 @@ exports.update = async (id, data) => {
         $set: data,
     }, {
         new: true
-    });
+    }).populate('typeService', ['price', 'discount', 'name']);
     return res;
 }
 
