@@ -15,8 +15,7 @@ exports.getById = async (req, res, next) => {
 }
 
 exports.post = async (req, res, next) => {
-    let { email, telefone, dateService } = req.body;
-
+    // let { email, telefone, dateService } = req.body;
 
     try {
         let retorno = await schedulingRepository.created(req.body);
@@ -41,15 +40,16 @@ exports.post = async (req, res, next) => {
 
         emailService.send(
             teste.email,
-            "Agendamento na KIIP limpeza automitiva!",
+            "Solicitação de agendamento na KIIP limpeza automotiva!",
             global.EMAIL_TMPL.replace('{0}', teste.name)
 
         );
         emailService.send(
-            "wesley.meneghiniwwm@gmail.com",
+            "Negrogwr@gmail.com",
             "Novo agendamento " + teste.dateService,
-            teste.toString()
+            teste.toString().replace(/,/g, "<br>")
         )
+        
 
         res.status(201).json(teste)
 

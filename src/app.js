@@ -1,10 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const app = express();
 const config = require('./config');
 
+app.use(cors())
 app.use('/files', express.static('uploads'))
 
 app.use(bodyParser.json());
